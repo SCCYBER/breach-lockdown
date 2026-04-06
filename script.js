@@ -197,7 +197,6 @@ const gameShell = document.getElementById("gameShell");
 const breachOverlay = document.getElementById("breachOverlay");
 const giantRansomSkull = document.getElementById("giantRansomSkull");
 const questionFlicker = document.getElementById("questionFlicker");
-
 const victoryOverlay = document.getElementById("victoryOverlay");
 const victoryScore = document.getElementById("victoryScore");
 const victoryTime = document.getElementById("victoryTime");
@@ -260,7 +259,7 @@ function updateVirusPosition() {
   const wrapRect = track.parentElement.getBoundingClientRect();
 
   const percent = getVirusPercent() / 100;
-  const leftPx = (trackRect.left - wrapRect.left) + (trackRect.width * percent) - 26;
+  const leftPx = (trackRect.left - wrapRect.left) + (trackRect.width * percent) - 30;
   virusToken.style.left = `${leftPx}px`;
 }
 
@@ -342,23 +341,17 @@ nextBtn.addEventListener("click", () => {
 function endGame() {
   clearInterval(timerInterval);
 
-  questionCard.style.display = "none";
-  resultCard.style.display = "block";
-
   const elapsed = Math.floor((Date.now() - startTime) / 1000);
   const passed = score >= PASS_MARK;
 
-  resultScore.textContent = `${score} / ${TOTAL_QUESTIONS}  |  TIME ${formatTime(elapsed)}`;
-
   if (passed) {
-    resultTitle.textContent = "VIRUS LOCKED OUT";
-    resultTitle.style.color = "var(--green)";
-    resultScore.style.color = "var(--green)";
-    resultCopy.textContent = `Mission passed. You hit the pass mark and sealed the breach.`;
     showVictoryTakeover(score, elapsed);
   } else {
+    questionCard.style.display = "none";
+    resultCard.style.display = "block";
     resultTitle.textContent = "SYSTEM BREACHED";
     resultTitle.style.color = "var(--red)";
+    resultScore.textContent = `${score} / ${TOTAL_QUESTIONS}  |  TIME ${formatTime(elapsed)}`;
     resultScore.style.color = "var(--red)";
     resultCopy.textContent = `Breach confirmed. You needed ${PASS_MARK}/10 to stop the virus.`;
     showLoseScene();
@@ -366,17 +359,18 @@ function endGame() {
 }
 
 function showVictoryTakeover(finalScore, elapsed) {
+  questionCard.style.display = "none";
+  resultCard.style.display = "none";
+
   victoryScore.textContent = `${finalScore} / ${TOTAL_QUESTIONS}`;
   victoryTime.textContent = `TIME ${formatTime(elapsed)}`;
 
-  setTimeout(() => {
-    gameShell.classList.add("victory-fade");
-  }, 300);
+  gameShell.classList.add("victory-fade");
 
   setTimeout(() => {
     victoryOverlay.classList.add("active");
     launchVictoryFireworks();
-  }, 1150);
+  }, 700);
 }
 
 function launchVictoryFireworks() {
