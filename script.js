@@ -194,8 +194,9 @@ const resultVisual = document.getElementById("resultVisual");
 const resultTitle = document.getElementById("resultTitle");
 const resultScore = document.getElementById("resultScore");
 const resultCopy = document.getElementById("resultCopy");
-const leftWall = document.getElementById("leftWall");
-const rightWall = document.getElementById("rightWall");
+const gameShell = document.getElementById("gameShell");
+const breachOverlay = document.getElementById("breachOverlay");
+const giantRansomSkull = document.getElementById("giantRansomSkull");
 
 const fxCanvas = document.getElementById("fxCanvas");
 const ctx = fxCanvas.getContext("2d");
@@ -373,16 +374,23 @@ function showWinScene() {
 function showLoseScene() {
   resultVisual.innerHTML = `
     <div class="lose-scene">
-      <div class="lose-screen" id="loseScreen">
+      <div class="lose-screen">
         <div class="lose-skull">☠</div>
       </div>
     </div>
   `;
 
   setTimeout(() => {
-    document.getElementById("loseScreen").classList.add("fizzle");
-    breachSparkBurst(window.innerWidth * 0.5, window.innerHeight * 0.34);
-  }, 500);
+    gameShell.classList.add("breach-fizzle");
+    breachSparkBurst(window.innerWidth * 0.5, window.innerHeight * 0.4);
+  }, 700);
+
+  setTimeout(() => {
+    breachOverlay.classList.add("active");
+    giantRansomSkull.classList.add("active");
+    document.querySelector(".breach-subtext").classList.add("active");
+    megaRansomBurst();
+  }, 1750);
 }
 
 function addParticle(x, y, vx, vy, size, color, life) {
@@ -427,15 +435,35 @@ function fireworkBurst(x, y) {
 
 function breachSparkBurst(x, y) {
   const colors = ["#ff3b6b", "#ffffff", "#ff8ea9"];
-  for (let i = 0; i < 48; i++) {
+  for (let i = 0; i < 60; i++) {
     addParticle(
       x,
       y,
-      (Math.random() - 0.5) * 7,
-      (Math.random() - 0.5) * 7,
+      (Math.random() - 0.5) * 8,
+      (Math.random() - 0.5) * 8,
       Math.random() * 4 + 2,
       colors[Math.floor(Math.random() * colors.length)],
-      38
+      40
+    );
+  }
+}
+
+function megaRansomBurst() {
+  const cx = window.innerWidth / 2;
+  const cy = window.innerHeight / 2;
+
+  const colors = ["#ff3b6b", "#ffffff", "#a94cff", "#ff8ea9"];
+  for (let i = 0; i < 180; i++) {
+    const angle = Math.random() * Math.PI * 2;
+    const speed = Math.random() * 6 + 1;
+    addParticle(
+      cx,
+      cy,
+      Math.cos(angle) * speed,
+      Math.sin(angle) * speed,
+      Math.random() * 5 + 2,
+      colors[Math.floor(Math.random() * colors.length)],
+      90
     );
   }
 }
