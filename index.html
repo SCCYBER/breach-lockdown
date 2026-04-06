@@ -23,7 +23,7 @@
     <div class="float-icon skull">☠</div>
   </div>
 
-  <main class="game-shell">
+  <main class="game-shell" id="gameShell">
     <img src="logo.png" alt="SCCYBER logo" class="logo">
 
     <h1 class="title">BREACH LOCKDOWN</h1>
@@ -81,6 +81,25 @@
       <button class="next-btn" onclick="location.reload()">PLAY AGAIN</button>
     </section>
   </main>
+
+  <div class="breach-overlay" id="breachOverlay">
+    <div class="breach-warning">RANSOMWARE DEPLOYED</div>
+    <div class="giant-ransom-skull" id="giantRansomSkull">
+      <div class="skull-row">00111111111100</div>
+      <div class="skull-row">01111111111110</div>
+      <div class="skull-row">11111111111111</div>
+      <div class="skull-row">11100111110011</div>
+      <div class="skull-row">11100111110011</div>
+      <div class="skull-row">11111111111111</div>
+      <div class="skull-row">01111111111110</div>
+      <div class="skull-row">00111111111100</div>
+      <div class="skull-row">00011111111000</div>
+      <div class="skull-row">00111000011100</div>
+      <div class="skull-row">01110000001110</div>
+      <div class="skull-row">11100000000111</div>
+    </div>
+    <div class="breach-subtext">YOUR FILES HAVE BEEN ENCRYPTED</div>
+  </div>
 
   <canvas id="fxCanvas"></canvas>
 
