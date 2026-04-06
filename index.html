@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SCCYBER Breach Lockdown</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="bg-grid"></div>
+  <div class="bg-scanlines"></div>
+
+  <div class="floating-icons">
+    <div class="float-icon skull">☠</div>
+    <div class="float-icon shield">🛡</div>
+    <div class="float-icon chip">▣</div>
+    <div class="float-icon skull">☠</div>
+  </div>
+
+  <main class="game-shell">
+    <img src="logo.png" alt="SCCYBER logo" class="logo">
+
+    <h1 class="title">BREACH LOCKDOWN</h1>
+    <p class="subtitle">Answer correctly to keep the virus out</p>
+
+    <section class="hud">
+      <div class="hud-box" id="scoreBox">SCORE: 0 / 10</div>
+      <div class="hud-box" id="timerBox">TIME: 00:00</div>
+      <div class="hud-box" id="counterBox">QUESTION 1 / 10</div>
+    </section>
+
+    <section class="timeline-card">
+      <div class="timeline-labels">
+        <span>VIRUS</span>
+        <span>LOCKDOWN WALL</span>
+      </div>
+
+      <div class="timeline-wrap">
+        <div class="timeline-track" id="timelineTrack">
+          <div class="track-node"></div>
+          <div class="track-node"></div>
+          <div class="track-node"></div>
+          <div class="track-node"></div>
+          <div class="track-node"></div>
+          <div class="track-node"></div>
+          <div class="track-node"></div>
+          <div class="track-node"></div>
+          <div class="track-node"></div>
+          <div class="track-node"></div>
+        </div>
+
+        <div class="virus-token" id="virusToken">☠</div>
+
+        <div class="wall-system" id="wallSystem">
+          <div class="firewall-wall left-wall" id="leftWall"></div>
+          <div class="firewall-core" id="firewallCore">🛡</div>
+          <div class="firewall-wall right-wall" id="rightWall"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="question-card" id="questionCard">
+      <div class="tag" id="tag">SECURITY</div>
+      <h2 class="question" id="question"></h2>
+      <div class="answers" id="answers"></div>
+      <div class="feedback" id="feedback"></div>
+      <button class="next-btn" id="nextBtn">NEXT QUESTION</button>
+    </section>
+
+    <section class="result-card" id="resultCard">
+      <div class="result-visual" id="resultVisual"></div>
+      <h2 class="result-title" id="resultTitle">LOCKDOWN SUCCESSFUL</h2>
+      <div class="result-score" id="resultScore"></div>
+      <div class="result-copy" id="resultCopy"></div>
+      <button class="next-btn" onclick="location.reload()">PLAY AGAIN</button>
+    </section>
+  </main>
+
+  <canvas id="fxCanvas"></canvas>
+
+  <script src="script.js"></script>
+</body>
+</html>
