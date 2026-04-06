@@ -190,7 +190,6 @@ const tagEl = document.getElementById("tag");
 const virusToken = document.getElementById("virusToken");
 const questionCard = document.getElementById("questionCard");
 const resultCard = document.getElementById("resultCard");
-const resultVisual = document.getElementById("resultVisual");
 const resultTitle = document.getElementById("resultTitle");
 const resultScore = document.getElementById("resultScore");
 const resultCopy = document.getElementById("resultCopy");
@@ -198,6 +197,10 @@ const gameShell = document.getElementById("gameShell");
 const breachOverlay = document.getElementById("breachOverlay");
 const giantRansomSkull = document.getElementById("giantRansomSkull");
 const questionFlicker = document.getElementById("questionFlicker");
+
+const victoryOverlay = document.getElementById("victoryOverlay");
+const victoryScore = document.getElementById("victoryScore");
+const victoryTime = document.getElementById("victoryTime");
 
 const fxCanvas = document.getElementById("fxCanvas");
 const ctx = fxCanvas.getContext("2d");
@@ -258,7 +261,6 @@ function updateVirusPosition() {
 
   const percent = getVirusPercent() / 100;
   const leftPx = (trackRect.left - wrapRect.left) + (trackRect.width * percent) - 26;
-
   virusToken.style.left = `${leftPx}px`;
 }
 
@@ -349,11 +351,11 @@ function endGame() {
   resultScore.textContent = `${score} / ${TOTAL_QUESTIONS}  |  TIME ${formatTime(elapsed)}`;
 
   if (passed) {
-    resultTitle.textContent = "VIRUS LOCKED DOWN";
+    resultTitle.textContent = "VIRUS LOCKED OUT";
     resultTitle.style.color = "var(--green)";
     resultScore.style.color = "var(--green)";
-    resultCopy.textContent = `Perfect. The firewall held. ${PASS_MARK}/10 or above secures the system.`;
-    showWinScene();
+    resultCopy.textContent = `Mission passed. You hit the pass mark and sealed the breach.`;
+    showVictoryTakeover(score, elapsed);
   } else {
     resultTitle.textContent = "SYSTEM BREACHED";
     resultTitle.style.color = "var(--red)";
@@ -363,51 +365,52 @@ function endGame() {
   }
 }
 
-function showWinScene() {
-  resultVisual.innerHTML = `
-    <div class="win-scene">
-      <div class="celebrate-text">VIRUS LOCKED DOWN</div>
-      <div class="win-wall left" id="winLeft"></div>
-      <div class="win-skull" id="winSkull">☠</div>
-      <div class="win-wall right" id="winRight"></div>
-    </div>
-  `;
+function showVictoryTakeover(finalScore, elapsed) {
+  victoryScore.textContent = `${finalScore} / ${TOTAL_QUESTIONS}`;
+  victoryTime.textContent = `TIME ${formatTime(elapsed)}`;
 
   setTimeout(() => {
-    document.getElementById("winLeft").classList.add("crush");
-    document.getElementById("winRight").classList.add("crush");
-    document.getElementById("winSkull").classList.add("crushed");
+    gameShell.classList.add("victory-fade");
   }, 300);
 
   setTimeout(() => {
+    victoryOverlay.classList.add("active");
     launchVictoryFireworks();
-  }, 850);
+  }, 1150);
 }
 
 function launchVictoryFireworks() {
   const bursts = [
-    [window.innerWidth * 0.15, window.innerHeight * 0.2],
-    [window.innerWidth * 0.3, window.innerHeight * 0.15],
-    [window.innerWidth * 0.5, window.innerHeight * 0.12],
-    [window.innerWidth * 0.7, window.innerHeight * 0.16],
-    [window.innerWidth * 0.85, window.innerHeight * 0.22],
-    [window.innerWidth * 0.22, window.innerHeight * 0.32],
-    [window.innerWidth * 0.5, window.innerHeight * 0.28],
-    [window.innerWidth * 0.78, window.innerHeight * 0.34]
+    [window.innerWidth * 0.1, window.innerHeight * 0.14],
+    [window.innerWidth * 0.22, window.innerHeight * 0.22],
+    [window.innerWidth * 0.35, window.innerHeight * 0.12],
+    [window.innerWidth * 0.5, window.innerHeight * 0.18],
+    [window.innerWidth * 0.65, window.innerHeight * 0.12],
+    [window.innerWidth * 0.78, window.innerHeight * 0.22],
+    [window.innerWidth * 0.9, window.innerHeight * 0.14],
+    [window.innerWidth * 0.16, window.innerHeight * 0.36],
+    [window.innerWidth * 0.5, window.innerHeight * 0.31],
+    [window.innerWidth * 0.84, window.innerHeight * 0.36]
   ];
 
   bursts.forEach((burst, i) => {
-    setTimeout(() => fireworkBurst(burst[0], burst[1], 120), i * 180);
+    setTimeout(() => fireworkBurst(burst[0], burst[1], 140), i * 160);
   });
+
+  setTimeout(() => {
+    const interval = setInterval(() => {
+      fireworkBurst(
+        Math.random() * window.innerWidth,
+        Math.random() * (window.innerHeight * 0.45),
+        110
+      );
+    }, 260);
+
+    setTimeout(() => clearInterval(interval), 2600);
+  }, 900);
 }
 
 function showLoseScene() {
-  resultVisual.innerHTML = `
-    <div class="lose-scene">
-      <div class="celebrate-text" style="color:var(--red);text-shadow:0 0 10px var(--red),0 0 24px rgba(255,59,107,0.35);">BREACH DETECTED</div>
-    </div>
-  `;
-
   setTimeout(() => {
     gameShell.classList.add("breach-fizzle");
     breachSparkBurst(window.innerWidth * 0.5, window.innerHeight * 0.4);
@@ -448,7 +451,7 @@ function fireworkBurst(x, y, count = 72) {
   const colors = ["#59ff9d", "#a94cff", "#ff3b6b", "#ffd44d", "#ffffff"];
   for (let i = 0; i < count; i++) {
     const angle = (Math.PI * 2 * i) / count;
-    const speed = Math.random() * 5.8 + 1.8;
+    const speed = Math.random() * 6.2 + 1.8;
     addParticle(
       x,
       y,
@@ -456,7 +459,7 @@ function fireworkBurst(x, y, count = 72) {
       Math.sin(angle) * speed,
       Math.random() * 6 + 2,
       colors[Math.floor(Math.random() * colors.length)],
-      82
+      88
     );
   }
 }
@@ -479,8 +482,8 @@ function breachSparkBurst(x, y) {
 function megaRansomBurst() {
   const cx = window.innerWidth / 2;
   const cy = window.innerHeight / 2;
-
   const colors = ["#ff3b6b", "#ffffff", "#a94cff", "#ff8ea9"];
+
   for (let i = 0; i < 180; i++) {
     const angle = Math.random() * Math.PI * 2;
     const speed = Math.random() * 6 + 1;
