@@ -117,7 +117,7 @@ body{
 }
 
 .game-shell.victory-fade{
-  animation:fullScreenVictoryFade 1s forwards;
+  animation:fullScreenVictoryFade 0.8s forwards;
 }
 
 @keyframes fullScreenBreachFizzle{
@@ -231,14 +231,14 @@ body{
 
 .virus-token{
   position:absolute;
-  top:18px;
+  top:16px;
   left:34px;
-  width:58px;
-  height:58px;
+  width:64px;
+  height:64px;
   display:flex;
   align-items:center;
   justify-content:center;
-  font-size:42px;
+  font-size:48px;
   color:var(--red);
   text-shadow:0 0 18px var(--red);
   transition:left 0.65s ease, transform 0.35s ease, opacity 0.35s ease;
@@ -263,7 +263,6 @@ body{
   background:linear-gradient(180deg, var(--green), #2ab96a);
   border:2px solid rgba(255,255,255,0.15);
   box-shadow:0 0 14px rgba(89,255,157,0.35);
-  transition:transform 0.35s ease;
 }
 
 .firewall-core{
@@ -401,27 +400,26 @@ body{
 .victory-overlay{
   position:fixed;
   inset:0;
-  z-index:8;
+  z-index:9999;
   background:
-    radial-gradient(circle at center, rgba(89,255,157,0.12), rgba(9,2,22,0.96) 60%),
-    linear-gradient(180deg, rgba(24,6,55,0.97), rgba(7,2,17,0.98));
+    radial-gradient(circle at center, rgba(89,255,157,0.16), rgba(9,2,22,0.97) 58%),
+    linear-gradient(180deg, rgba(24,6,55,0.98), rgba(7,2,17,0.99));
   display:none;
   align-items:center;
   justify-content:center;
   flex-direction:column;
   gap:18px;
-  pointer-events:none;
   overflow:hidden;
 }
 
 .victory-overlay.active{
   display:flex;
-  animation:victoryFlashIn 0.4s ease forwards;
+  animation:victoryFlashIn 0.35s ease forwards;
 }
 
 @keyframes victoryFlashIn{
-  0%{ opacity:0; }
-  100%{ opacity:1; }
+  0%{ opacity:0; transform:scale(1.02); }
+  100%{ opacity:1; transform:scale(1); }
 }
 
 .victory-topline{
@@ -434,64 +432,63 @@ body{
 }
 
 .victory-overlay.active .victory-topline{
-  animation:victoryTextIn 0.45s ease forwards 0.2s;
+  animation:victoryTextIn 0.45s ease forwards 0.15s;
 }
 
 .victory-wall-wrap{
   position:relative;
-  width:min(88vw, 980px);
-  height:230px;
+  width:min(92vw, 1100px);
+  height:260px;
   display:flex;
   align-items:center;
   justify-content:center;
-  gap:24px;
+  gap:28px;
 }
 
 .victory-wall{
-  width:95px;
-  height:210px;
+  width:110px;
+  height:230px;
   background:
     linear-gradient(180deg, #94ffbd 0%, #59ff9d 35%, #2de078 100%);
   border:4px solid rgba(255,255,255,0.16);
   box-shadow:
     0 0 22px rgba(89,255,157,0.55),
     0 0 60px rgba(89,255,157,0.18);
-  transform:translateX(0);
 }
 
 .victory-wall-left{
-  transform:translateX(-430px);
+  transform:translateX(-520px);
 }
 
 .victory-wall-right{
-  transform:translateX(430px);
+  transform:translateX(520px);
 }
 
 .victory-overlay.active .victory-wall-left{
-  animation:closeLeftWall 0.7s cubic-bezier(.2,.9,.2,1) forwards 0.15s;
+  animation:closeLeftWall 0.8s cubic-bezier(.2,.9,.2,1) forwards 0.1s;
 }
 
 .victory-overlay.active .victory-wall-right{
-  animation:closeRightWall 0.7s cubic-bezier(.2,.9,.2,1) forwards 0.15s;
+  animation:closeRightWall 0.8s cubic-bezier(.2,.9,.2,1) forwards 0.1s;
 }
 
 @keyframes closeLeftWall{
-  0%{ transform:translateX(-430px); }
+  0%{ transform:translateX(-520px); }
   100%{ transform:translateX(0); }
 }
 
 @keyframes closeRightWall{
-  0%{ transform:translateX(430px); }
+  0%{ transform:translateX(520px); }
   100%{ transform:translateX(0); }
 }
 
 .victory-core{
-  width:110px;
-  height:110px;
+  width:120px;
+  height:120px;
   display:flex;
   align-items:center;
   justify-content:center;
-  font-size:72px;
+  font-size:78px;
   color:var(--green);
   text-shadow:0 0 18px var(--green), 0 0 42px rgba(89,255,157,0.45);
   opacity:0;
@@ -499,7 +496,7 @@ body{
 }
 
 .victory-overlay.active .victory-core{
-  animation:corePop 0.45s ease forwards 0.72s;
+  animation:corePop 0.45s ease forwards 0.78s;
 }
 
 @keyframes corePop{
@@ -513,13 +510,13 @@ body{
 .victory-score,
 .victory-time{
   opacity:0;
-  transform:translateY(12px);
+  transform:translateY(14px);
 }
 
 .victory-title{
   font-family:'Press Start 2P', cursive;
   color:var(--green);
-  font-size:clamp(22px, 4vw, 48px);
+  font-size:clamp(24px, 4vw, 52px);
   line-height:1.5;
   text-shadow:0 0 16px var(--green), 0 0 36px rgba(89,255,157,0.35);
 }
@@ -548,30 +545,30 @@ body{
 }
 
 .victory-overlay.active .victory-title{
-  animation:victoryTextIn 0.45s ease forwards 0.95s;
+  animation:victoryTextIn 0.45s ease forwards 1s;
 }
 
 .victory-overlay.active .victory-status{
-  animation:victoryTextIn 0.45s ease forwards 1.08s;
+  animation:victoryTextIn 0.45s ease forwards 1.12s;
 }
 
 .victory-overlay.active .victory-score{
-  animation:victoryTextIn 0.45s ease forwards 1.2s;
+  animation:victoryTextIn 0.45s ease forwards 1.24s;
 }
 
 .victory-overlay.active .victory-time{
-  animation:victoryTextIn 0.45s ease forwards 1.3s;
+  animation:victoryTextIn 0.45s ease forwards 1.34s;
 }
 
 @keyframes victoryTextIn{
-  0%{ opacity:0; transform:translateY(12px); }
+  0%{ opacity:0; transform:translateY(14px); }
   100%{ opacity:1; transform:translateY(0); }
 }
 
 .breach-overlay{
   position:fixed;
   inset:0;
-  z-index:8;
+  z-index:9999;
   background:
     radial-gradient(circle at center, rgba(255,59,107,0.14), rgba(9,2,22,0.96) 60%),
     rgba(9,2,22,0.98);
@@ -713,10 +710,10 @@ body{
   }
 
   .virus-token{
-    width:52px;
-    height:52px;
-    font-size:36px;
-    top:22px;
+    width:58px;
+    height:58px;
+    font-size:42px;
+    top:18px;
   }
 
   .victory-wall-wrap{
