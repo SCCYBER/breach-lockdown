@@ -528,7 +528,7 @@ function startGame() {
 
   setTimeout(() => {
     startScreen.style.display = "none";
-  }, 500);
+  }, 350);
 
   prepareQuestions();
   updateHud();
