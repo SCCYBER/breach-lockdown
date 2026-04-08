@@ -34,11 +34,9 @@ body{
   align-items:center;
   justify-content:center;
   padding:24px;
-  background:
-    radial-gradient(circle at center, rgba(169,76,255,0.18), rgba(9,2,22,0.96) 56%),
-    linear-gradient(180deg, rgba(18,4,45,0.96), rgba(7,2,17,0.99));
-  backdrop-filter:blur(2px);
-  transition:opacity 0.45s ease, visibility 0.45s ease;
+  background:rgba(9,2,22,0.78);
+  backdrop-filter:blur(4px);
+  transition:opacity 0.28s ease, visibility 0.28s ease;
 }
 
 .start-screen.hidden{
@@ -47,114 +45,83 @@ body{
   pointer-events:none;
 }
 
-.start-screen-inner{
+.start-panel{
   width:min(92vw, 760px);
-  padding:34px 26px 38px;
-  border:2px solid rgba(169,76,255,0.35);
-  border-radius:22px;
-  background:linear-gradient(180deg, rgba(19,4,45,0.96), rgba(10,3,26,0.98));
-  box-shadow:
-    0 0 34px rgba(111,29,206,0.35),
-    inset 0 0 26px rgba(89,255,157,0.05);
+  background:linear-gradient(180deg, rgba(19,4,45,0.96), rgba(13,3,31,0.97));
+  border:2px solid rgba(169,76,255,0.28);
+  border-radius:18px;
+  padding:24px 18px 30px;
+  box-shadow:0 0 40px rgba(111,29,206,0.35);
   position:relative;
-  overflow:hidden;
-}
-
-.start-screen-inner::before{
-  content:"";
-  position:absolute;
-  inset:0;
-  background:
-    linear-gradient(rgba(169,76,255,0.05) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(89,255,157,0.05) 1px, transparent 1px);
-  background-size:26px 26px;
-  pointer-events:none;
-}
-
-.start-screen-inner::after{
-  content:"";
-  position:absolute;
-  inset:0;
-  background:repeating-linear-gradient(
-    to bottom,
-    rgba(255,255,255,0.02) 0px,
-    rgba(255,255,255,0.02) 1px,
-    transparent 2px,
-    transparent 4px
-  );
-  pointer-events:none;
+  z-index:2;
 }
 
 .start-logo{
-  position:relative;
-  z-index:1;
-  width:170px;
-  max-width:58vw;
-  margin-bottom:18px;
+  width:120px;
+  max-width:42vw;
+  margin-bottom:14px;
 }
 
-.start-kicker{
-  position:relative;
-  z-index:1;
+.start-badge{
   display:inline-block;
-  margin-bottom:18px;
   padding:8px 12px;
+  margin-bottom:16px;
   border-radius:999px;
   background:rgba(89,255,157,0.08);
-  border:1px solid rgba(89,255,157,0.24);
+  border:1px solid rgba(89,255,157,0.22);
   color:var(--green);
   font-family:'Press Start 2P', cursive;
   font-size:10px;
-  line-height:1.7;
+  line-height:1.5;
 }
 
-.start-title{
-  position:relative;
-  z-index:1;
-  margin:0 0 22px;
+.start-title-main{
+  margin:0 0 12px;
   font-family:'Press Start 2P', cursive;
-  font-size:clamp(22px, 4vw, 44px);
+  font-size:clamp(20px, 3.2vw, 34px);
   line-height:1.5;
   color:var(--purple);
-  text-shadow:0 0 12px var(--purple), 0 0 24px rgba(89,255,157,0.16);
+  text-shadow:0 0 12px var(--purple), 0 0 24px rgba(89,255,157,0.18);
+}
+
+.start-subtitle{
+  margin:0 0 22px;
+  color:var(--muted);
+  font-size:15px;
+}
+
+.start-copy-wrap{
+  max-width:620px;
+  margin:0 auto 24px;
 }
 
 .start-copy{
-  position:relative;
-  z-index:1;
   margin:0 0 14px;
-  font-size:20px;
-  line-height:1.7;
   color:var(--text);
-}
-
-.start-copy-small{
-  color:var(--muted);
-  font-size:17px;
-  margin-bottom:28px;
+  font-size:18px;
+  line-height:1.6;
 }
 
 .start-play-btn{
-  position:relative;
-  z-index:1;
+  width:100%;
+  max-width:320px;
   border:none;
-  border-radius:14px;
-  padding:18px 28px;
-  min-width:220px;
-  background:linear-gradient(90deg, var(--purple-2), var(--purple));
-  color:#fff;
+  border-radius:12px;
+  padding:16px 14px;
   font-family:'Press Start 2P', cursive;
-  font-size:14px;
+  font-size:13px;
   line-height:1.6;
+  color:var(--bg);
   cursor:pointer;
+  background:linear-gradient(180deg, #7dffb4, #59ff9d);
+  box-shadow:0 0 18px rgba(89,255,157,0.22);
   transition:transform 0.16s ease, box-shadow 0.16s ease, filter 0.16s ease;
-  box-shadow:0 0 20px rgba(169,76,255,0.22);
 }
 
 .start-play-btn:hover{
-  transform:translateY(-2px) scale(1.01);
-  box-shadow:0 0 24px rgba(169,76,255,0.3);
-  filter:brightness(1.08);
+  transform:translateY(-2px);
+  box-shadow:0 0 24px rgba(89,255,157,0.32);
+  filter:brightness(1.05);
 }
 
 .bg-grid{
@@ -820,32 +787,6 @@ body{
 }
 
 @media (max-width:760px){
-  body{
-    padding:20px 12px 36px;
-  }
-
-  .start-screen-inner{
-    padding:28px 18px 30px;
-  }
-
-  .start-title{
-    font-size:clamp(20px, 7vw, 34px);
-  }
-
-  .start-copy{
-    font-size:17px;
-  }
-
-  .start-copy-small{
-    font-size:15px;
-  }
-
-  .start-play-btn{
-    width:100%;
-    min-width:0;
-    font-size:12px;
-  }
-
   .hud{
     grid-template-columns:1fr;
   }
@@ -903,6 +844,30 @@ body{
 
   .giant-ransom-skull.active{
     animation:giantSkullPopMobile 0.6s ease forwards;
+  }
+
+  .start-logo{
+    width:96px;
+  }
+
+  .start-badge{
+    font-size:9px;
+  }
+
+  .start-title-main{
+    font-size:clamp(18px, 6vw, 26px);
+  }
+
+  .start-subtitle{
+    font-size:14px;
+  }
+
+  .start-copy{
+    font-size:16px;
+  }
+
+  .start-play-btn{
+    font-size:12px;
   }
 
   @keyframes giantSkullPopMobile{
