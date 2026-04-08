@@ -197,6 +197,7 @@ const resultCard = document.getElementById("resultCard");
 const resultTitle = document.getElementById("resultTitle");
 const resultScore = document.getElementById("resultScore");
 const resultCopy = document.getElementById("resultCopy");
+const resultActionBtn = document.getElementById("resultActionBtn");
 const gameShell = document.getElementById("gameShell");
 const breachOverlay = document.getElementById("breachOverlay");
 const giantRansomSkull = document.getElementById("giantRansomSkull");
@@ -204,6 +205,9 @@ const questionFlicker = document.getElementById("questionFlicker");
 const victoryOverlay = document.getElementById("victoryOverlay");
 const victoryScore = document.getElementById("victoryScore");
 const victoryTime = document.getElementById("victoryTime");
+const victoryActionBtn = document.getElementById("victoryActionBtn");
+const ransomBtn = document.getElementById("ransomBtn");
+const breachSubtext = document.querySelector(".breach-subtext");
 
 const fxCanvas = document.getElementById("fxCanvas");
 const ctx = fxCanvas.getContext("2d");
@@ -362,6 +366,7 @@ function endGame() {
     resultScore.textContent = `${score} / ${TOTAL_QUESTIONS}  |  TIME ${formatTime(elapsed)}`;
     resultScore.style.color = "var(--red)";
     resultCopy.textContent = `Breach confirmed. You needed ${PASS_MARK}/10 to stop the virus.`;
+    resultActionBtn.style.display = "none";
     showLoseScene();
   }
 }
@@ -421,7 +426,7 @@ function showLoseScene() {
   setTimeout(() => {
     breachOverlay.classList.add("active");
     giantRansomSkull.classList.add("active");
-    document.querySelector(".breach-subtext").classList.add("active");
+    breachSubtext.classList.add("active");
     megaRansomBurst();
   }, 1750);
 }
@@ -518,6 +523,46 @@ function animateParticles() {
   requestAnimationFrame(animateParticles);
 }
 
+function resetGame() {
+  clearInterval(timerInterval);
+
+  questions = [];
+  currentIndex = 0;
+  score = 0;
+  answered = false;
+  startTime = null;
+  gameStarted = false;
+  particles = [];
+
+  questionCard.style.display = "block";
+  resultCard.style.display = "none";
+  feedbackEl.textContent = "";
+  answersEl.innerHTML = "";
+  nextBtn.style.display = "none";
+
+  resultTitle.textContent = "LOCKDOWN SUCCESSFUL";
+  resultTitle.style.color = "var(--text)";
+  resultScore.textContent = "";
+  resultScore.style.color = "var(--green)";
+  resultCopy.textContent = "";
+  resultActionBtn.style.display = "block";
+
+  gameShell.classList.remove("victory-fade", "breach-fizzle");
+  victoryOverlay.classList.remove("active");
+  breachOverlay.classList.remove("active");
+  giantRansomSkull.classList.remove("active");
+  breachSubtext.classList.remove("active");
+
+  timerBox.textContent = "TIME: 00:00";
+  updateHud();
+  requestAnimationFrame(updateVirusPosition);
+
+  startScreen.style.display = "flex";
+  requestAnimationFrame(() => {
+    startScreen.classList.remove("hidden");
+  });
+}
+
 function startGame() {
   if (gameStarted) return;
 
@@ -539,6 +584,9 @@ function startGame() {
 }
 
 playNowBtn.addEventListener("click", startGame);
+victoryActionBtn.addEventListener("click", resetGame);
+ransomBtn.addEventListener("click", resetGame);
+resultActionBtn.addEventListener("click", resetGame);
 
 timerBox.textContent = "TIME: 00:00";
 updateHud();
