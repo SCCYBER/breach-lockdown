@@ -54,12 +54,18 @@ body{
   box-shadow:0 0 40px rgba(111,29,206,0.35);
   position:relative;
   z-index:2;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
 }
 
 .start-logo{
+  display:block;
   width:120px;
   max-width:42vw;
-  margin-bottom:14px;
+  margin:0 auto 14px;
 }
 
 .start-badge{
@@ -495,13 +501,11 @@ body{
   margin-bottom:18px;
 }
 
-.victory-overlay{
+.victory-overlay,
+.breach-overlay{
   position:fixed;
   inset:0;
   z-index:9999;
-  background:
-    radial-gradient(circle at center, rgba(89,255,157,0.16), rgba(9,2,22,0.97) 58%),
-    linear-gradient(180deg, rgba(24,6,55,0.98), rgba(7,2,17,0.99));
   display:none;
   align-items:center;
   justify-content:center;
@@ -510,14 +514,38 @@ body{
   overflow:hidden;
 }
 
+.victory-overlay{
+  background:
+    radial-gradient(circle at center, rgba(89,255,157,0.16), rgba(9,2,22,0.97) 58%),
+    linear-gradient(180deg, rgba(24,6,55,0.98), rgba(7,2,17,0.99));
+}
+
+.breach-overlay{
+  background:
+    radial-gradient(circle at center, rgba(255,59,107,0.14), rgba(9,2,22,0.96) 60%),
+    rgba(9,2,22,0.98);
+  pointer-events:none;
+}
+
 .victory-overlay.active{
   display:flex;
   animation:victoryFlashIn 0.35s ease forwards;
 }
 
+.breach-overlay.active{
+  display:flex;
+  animation:overlayFlashIn 0.35s ease forwards;
+  pointer-events:auto;
+}
+
 @keyframes victoryFlashIn{
   0%{ opacity:0; transform:scale(1.02); }
   100%{ opacity:1; transform:scale(1); }
+}
+
+@keyframes overlayFlashIn{
+  0%{ opacity:0; }
+  100%{ opacity:1; }
 }
 
 .victory-topline{
@@ -663,31 +691,6 @@ body{
   100%{ opacity:1; transform:translateY(0); }
 }
 
-.breach-overlay{
-  position:fixed;
-  inset:0;
-  z-index:9999;
-  background:
-    radial-gradient(circle at center, rgba(255,59,107,0.14), rgba(9,2,22,0.96) 60%),
-    rgba(9,2,22,0.98);
-  display:none;
-  align-items:center;
-  justify-content:center;
-  flex-direction:column;
-  gap:18px;
-  pointer-events:none;
-}
-
-.breach-overlay.active{
-  display:flex;
-  animation:overlayFlashIn 0.35s ease forwards;
-}
-
-@keyframes overlayFlashIn{
-  0%{ opacity:0; }
-  100%{ opacity:1; }
-}
-
 .breach-warning{
   font-family:'Press Start 2P', cursive;
   color:var(--red);
@@ -786,6 +789,42 @@ body{
   100%{ opacity:1; transform:translateY(0); }
 }
 
+.overlay-action-btn{
+  display:none;
+  border:none;
+  border-radius:12px;
+  padding:16px 18px;
+  min-width:280px;
+  font-family:'Press Start 2P', cursive;
+  font-size:12px;
+  line-height:1.7;
+  cursor:pointer;
+  transition:transform 0.16s ease, box-shadow 0.16s ease, filter 0.16s ease;
+}
+
+.victory-action-btn{
+  background:linear-gradient(180deg, #7dffb4, #59ff9d);
+  color:var(--bg);
+  box-shadow:0 0 18px rgba(89,255,157,0.28);
+}
+
+.ransom-action-btn{
+  background:linear-gradient(180deg, #ff6b92, #ff3b6b);
+  color:#fff;
+  box-shadow:0 0 18px rgba(255,59,107,0.32);
+}
+
+.victory-overlay.active .overlay-action-btn,
+.breach-overlay.active .overlay-action-btn{
+  display:block;
+  animation:victoryTextIn 0.45s ease forwards 1.5s;
+}
+
+.overlay-action-btn:hover{
+  transform:translateY(-2px);
+  filter:brightness(1.05);
+}
+
 @media (max-width:760px){
   .hud{
     grid-template-columns:1fr;
@@ -868,6 +907,12 @@ body{
 
   .start-play-btn{
     font-size:12px;
+  }
+
+  .overlay-action-btn{
+    min-width:0;
+    width:90%;
+    font-size:11px;
   }
 
   @keyframes giantSkullPopMobile{
