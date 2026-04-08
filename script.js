@@ -197,17 +197,17 @@ const resultCard = document.getElementById("resultCard");
 const resultTitle = document.getElementById("resultTitle");
 const resultScore = document.getElementById("resultScore");
 const resultCopy = document.getElementById("resultCopy");
-const resultActionBtn = document.getElementById("resultActionBtn");
 const gameShell = document.getElementById("gameShell");
 const breachOverlay = document.getElementById("breachOverlay");
 const giantRansomSkull = document.getElementById("giantRansomSkull");
+const breachSubtext = document.getElementById("breachSubtext");
 const questionFlicker = document.getElementById("questionFlicker");
 const victoryOverlay = document.getElementById("victoryOverlay");
 const victoryScore = document.getElementById("victoryScore");
 const victoryTime = document.getElementById("victoryTime");
 const victoryActionBtn = document.getElementById("victoryActionBtn");
 const ransomBtn = document.getElementById("ransomBtn");
-const breachSubtext = document.querySelector(".breach-subtext");
+const wrongSkullOverlay = document.getElementById("wrongSkullOverlay");
 
 const fxCanvas = document.getElementById("fxCanvas");
 const ctx = fxCanvas.getContext("2d");
@@ -281,6 +281,12 @@ function triggerQuestionFlicker() {
   questionFlicker.classList.add("active");
 }
 
+function triggerWrongSkull() {
+  wrongSkullOverlay.classList.remove("active");
+  void wrongSkullOverlay.offsetWidth;
+  wrongSkullOverlay.classList.add("active");
+}
+
 function renderQuestion() {
   answered = false;
   const q = questions[currentIndex];
@@ -320,6 +326,8 @@ function handleAnswer(isCorrect, clickedBtn, q) {
     clickedBtn.classList.add("wrong");
     feedbackEl.textContent = q.fail;
     feedbackEl.style.color = "var(--red)";
+    triggerWrongSkull();
+    breachSparkBurst(window.innerWidth * 0.5, window.innerHeight * 0.35);
   }
 
   allBtns.forEach(btn => {
@@ -366,7 +374,6 @@ function endGame() {
     resultScore.textContent = `${score} / ${TOTAL_QUESTIONS}  |  TIME ${formatTime(elapsed)}`;
     resultScore.style.color = "var(--red)";
     resultCopy.textContent = `Breach confirmed. You needed ${PASS_MARK}/10 to stop the virus.`;
-    resultActionBtn.style.display = "none";
     showLoseScene();
   }
 }
@@ -523,6 +530,20 @@ function animateParticles() {
   requestAnimationFrame(animateParticles);
 }
 
+function showStartScreen() {
+  startScreen.style.display = "flex";
+  requestAnimationFrame(() => {
+    startScreen.classList.remove("hidden");
+  });
+}
+
+function hideStartScreen() {
+  startScreen.classList.add("hidden");
+  setTimeout(() => {
+    startScreen.style.display = "none";
+  }, 300);
+}
+
 function resetGame() {
   clearInterval(timerInterval);
 
@@ -536,31 +557,26 @@ function resetGame() {
 
   questionCard.style.display = "block";
   resultCard.style.display = "none";
-  feedbackEl.textContent = "";
-  answersEl.innerHTML = "";
-  nextBtn.style.display = "none";
-
   resultTitle.textContent = "LOCKDOWN SUCCESSFUL";
   resultTitle.style.color = "var(--text)";
   resultScore.textContent = "";
   resultScore.style.color = "var(--green)";
   resultCopy.textContent = "";
-  resultActionBtn.style.display = "block";
+  feedbackEl.textContent = "";
+  answersEl.innerHTML = "";
+  nextBtn.style.display = "none";
 
   gameShell.classList.remove("victory-fade", "breach-fizzle");
   victoryOverlay.classList.remove("active");
   breachOverlay.classList.remove("active");
   giantRansomSkull.classList.remove("active");
   breachSubtext.classList.remove("active");
+  wrongSkullOverlay.classList.remove("active");
 
   timerBox.textContent = "TIME: 00:00";
   updateHud();
   requestAnimationFrame(updateVirusPosition);
-
-  startScreen.style.display = "flex";
-  requestAnimationFrame(() => {
-    startScreen.classList.remove("hidden");
-  });
+  showStartScreen();
 }
 
 function startGame() {
@@ -569,12 +585,7 @@ function startGame() {
   gameStarted = true;
   startTime = Date.now();
 
-  startScreen.classList.add("hidden");
-
-  setTimeout(() => {
-    startScreen.style.display = "none";
-  }, 350);
-
+  hideStartScreen();
   prepareQuestions();
   updateHud();
   renderQuestion();
@@ -586,7 +597,6 @@ function startGame() {
 playNowBtn.addEventListener("click", startGame);
 victoryActionBtn.addEventListener("click", resetGame);
 ransomBtn.addEventListener("click", resetGame);
-resultActionBtn.addEventListener("click", resetGame);
 
 timerBox.textContent = "TIME: 00:00";
 updateHud();
