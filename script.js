@@ -176,8 +176,12 @@ let questions = [];
 let currentIndex = 0;
 let score = 0;
 let answered = false;
-let startTime = Date.now();
+let startTime = null;
 let timerInterval = null;
+let gameStarted = false;
+
+const playNowBtn = document.getElementById("playNowBtn");
+const startScreen = document.getElementById("startScreen");
 
 const questionEl = document.getElementById("question");
 const answersEl = document.getElementById("answers");
@@ -235,7 +239,9 @@ function formatTime(totalSeconds) {
 }
 
 function startTimer() {
+  clearInterval(timerInterval);
   timerInterval = setInterval(() => {
+    if (!gameStarted || startTime === null) return;
     const elapsed = Math.floor((Date.now() - startTime) / 1000);
     timerBox.textContent = `TIME: ${formatTime(elapsed)}`;
   }, 1000);
@@ -255,6 +261,8 @@ function getVirusPercent() {
 
 function updateVirusPosition() {
   const track = document.getElementById("timelineTrack");
+  if (!track) return;
+
   const trackRect = track.getBoundingClientRect();
   const wrapRect = track.parentElement.getBoundingClientRect();
 
@@ -510,10 +518,30 @@ function animateParticles() {
   requestAnimationFrame(animateParticles);
 }
 
-prepareQuestions();
+function startGame() {
+  if (gameStarted) return;
+
+  gameStarted = true;
+  startTime = Date.now();
+
+  startScreen.classList.add("hidden");
+
+  setTimeout(() => {
+    startScreen.style.display = "none";
+  }, 500);
+
+  prepareQuestions();
+  updateHud();
+  renderQuestion();
+  startTimer();
+
+  requestAnimationFrame(updateVirusPosition);
+}
+
+playNowBtn.addEventListener("click", startGame);
+
+timerBox.textContent = "TIME: 00:00";
 updateHud();
-renderQuestion();
-startTimer();
 animateParticles();
 window.addEventListener("load", updateVirusPosition);
 window.addEventListener("resize", updateVirusPosition);
