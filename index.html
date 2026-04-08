@@ -31,13 +31,20 @@
         </p>
       </div>
 
-      <button id="playNowBtn" class="start-play-btn" type="button">PLAY NOW</button>
+      <button id="playNowBtn" class="arcade-green-btn" type="button">PLAY NOW</button>
     </div>
   </div>
 
   <div class="bg-grid"></div>
   <div class="bg-scanlines"></div>
   <div class="question-flicker" id="questionFlicker"></div>
+
+  <div class="wrong-skull-overlay" id="wrongSkullOverlay">
+    <div class="wrong-skull-inner">
+      <div class="wrong-skull-icon">☠</div>
+      <div class="wrong-skull-laugh">HA. HA. HA.</div>
+    </div>
+  </div>
 
   <div class="floating-icons">
     <div class="float-icon skull">☠</div>
@@ -101,7 +108,6 @@
       <h2 class="result-title" id="resultTitle">LOCKDOWN SUCCESSFUL</h2>
       <div class="result-score" id="resultScore"></div>
       <div class="result-copy" id="resultCopy"></div>
-      <button class="next-btn" id="resultActionBtn" type="button">PLAY AGAIN</button>
     </section>
   </main>
 
@@ -118,7 +124,7 @@
     <div class="victory-status">MISSION PASSED</div>
     <div class="victory-score" id="victoryScore">10 / 10</div>
     <div class="victory-time" id="victoryTime">TIME 00:00</div>
-    <button class="overlay-action-btn victory-action-btn" id="victoryActionBtn" type="button">PLAY AGAIN</button>
+    <button id="victoryActionBtn" class="arcade-green-btn overlay-btn" type="button">PLAY AGAIN</button>
   </div>
 
   <div class="breach-overlay" id="breachOverlay">
@@ -137,8 +143,8 @@
       <div class="skull-row"></div>
       <div class="skull-row"></div>
     </div>
-    <div class="breach-subtext">YOUR FILES HAVE BEEN ENCRYPTED</div>
-    <button class="overlay-action-btn ransom-action-btn" id="ransomBtn" type="button">CLICK TO PAY RANSOM</button>
+    <div class="breach-subtext" id="breachSubtext">YOUR FILES HAVE BEEN ENCRYPTED</div>
+    <button id="ransomBtn" class="arcade-green-btn overlay-btn" type="button">CLICK TO PAY RANSOM</button>
   </div>
 
   <canvas id="fxCanvas"></canvas>
