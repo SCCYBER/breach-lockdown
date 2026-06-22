@@ -17,11 +17,16 @@
 
   function locked(message) {
     document.documentElement.style.visibility = "visible";
-    document.body.innerHTML = '<main class="game-shell" style="min-height:80vh;display:flex;align-items:center;justify-content:center;text-align:center;"><section class="start-panel" style="max-width:760px;"><img src="logo.png" alt="SCCYBER logo" class="start-logo"><div class="start-badge">PREMIUM ACCESS REQUIRED</div><h1 class="start-title-main">ACCESS LOCKED</h1><p class="start-subtitle">' + message + '</p><p class="start-copy">Please return to the SCCYBER Training Portal and log in with an active premium account.</p><a class="arcade-green-btn" style="display:inline-block;text-decoration:none;margin-top:18px;" href="https://sccyber.github.io/Immersive-Training-Package/">RETURN TO PORTAL</a></section></main>';
+    document.body.innerHTML = '<main class="game-shell" style="min-height:80vh;display:flex;align-items:center;justify-content:center;text-align:center;"><section class="start-panel" style="max-width:760px;"><img src="logo.png" alt="SCCYBER logo" class="start-logo"><div class="start-badge">PORTAL ACCESS REQUIRED</div><h1 class="start-title-main">ACCESS LOCKED</h1><p class="start-subtitle">' + message + '</p><p class="start-copy">Please return to the SCCYBER Training Portal and launch this module from your dashboard.</p><a class="arcade-green-btn" style="display:inline-block;text-decoration:none;margin-top:18px;" href="https://sccyber.github.io/Immersive-Training-Package/">RETURN TO PORTAL</a></section></main>';
   }
 
   async function checkAccess() {
     try {
+      if (window.top === window.self) {
+        locked("Direct access is not allowed.");
+        return;
+      }
+
       if (!window.supabase) {
         await loadScript("https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2");
       }
