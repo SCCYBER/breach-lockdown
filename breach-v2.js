@@ -1,3 +1,74 @@
+(function () {
+  document.documentElement.style.visibility = "hidden";
+
+  function loadScript(src) {
+    return new Promise(function (resolve, reject) {
+      if (document.querySelector('script[src="' + src + '"]')) {
+        resolve();
+        return;
+      }
+      var script = document.createElement("script");
+      script.src = src;
+      script.onload = resolve;
+      script.onerror = reject;
+      document.head.appendChild(script);
+    });
+  }
+
+  function locked(message) {
+    document.documentElement.style.visibility = "visible";
+    document.body.innerHTML = '<main class="game-shell" style="min-height:80vh;display:flex;align-items:center;justify-content:center;text-align:center;"><section class="start-panel" style="max-width:760px;"><img src="logo.png" alt="SCCYBER logo" class="start-logo"><div class="start-badge">PREMIUM ACCESS REQUIRED</div><h1 class="start-title-main">ACCESS LOCKED</h1><p class="start-subtitle">' + message + '</p><p class="start-copy">Please return to the SCCYBER Training Portal and log in with an active premium account.</p><a class="arcade-green-btn" style="display:inline-block;text-decoration:none;margin-top:18px;" href="https://sccyber.github.io/Immersive-Training-Package/">RETURN TO PORTAL</a></section></main>';
+  }
+
+  async function checkAccess() {
+    try {
+      if (!window.supabase) {
+        await loadScript("https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2");
+      }
+
+      if (!window.SCCYBER_SUPABASE_URL || !window.SCCYBER_SUPABASE_ANON_KEY) {
+        await loadScript("https://sccyber.github.io/Immersive-Training-Package/supabase-config.js");
+      }
+
+      if (!window.supabase || !window.SCCYBER_SUPABASE_URL || !window.SCCYBER_SUPABASE_ANON_KEY) {
+        locked("Secure access check is not available.");
+        return;
+      }
+
+      var client = window.supabase.createClient(window.SCCYBER_SUPABASE_URL, window.SCCYBER_SUPABASE_ANON_KEY);
+      var sessionResult = await client.auth.getSession();
+      var user = sessionResult && sessionResult.data && sessionResult.data.session && sessionResult.data.session.user;
+
+      if (!user || !user.id) {
+        locked("No active portal session was found.");
+        return;
+      }
+
+      var profileResult = await client
+        .from("profiles")
+        .select("premium_enabled,is_admin")
+        .eq("id", user.id)
+        .single();
+
+      if (profileResult.error || !profileResult.data) {
+        locked("Your account could not be verified.");
+        return;
+      }
+
+      if (profileResult.data.is_admin === true || profileResult.data.premium_enabled === true) {
+        document.documentElement.style.visibility = "visible";
+        return;
+      }
+
+      locked("Premium access is not active for this account.");
+    } catch (e) {
+      locked("Secure access check failed.");
+    }
+  }
+
+  checkAccess();
+})();
+
 const SCCYBER_STAGES = [
   { name: "INITIAL ACCESS", lesson: "Most breaches begin with a user, a link, a password or an exposed service." },
   { name: "CREDENTIAL THEFT", lesson: "Once credentials are stolen, MFA and verification become critical." },
