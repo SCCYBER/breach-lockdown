@@ -83,9 +83,9 @@
   </div>
 
   <div class="breach-overlay" id="breachOverlay">
-    <div class="breach-warning">RANSOMWARE DEPLOYED</div>
+    <div class="breach-warning">SYSTEM BREACH</div>
     <div class="giant-ransom-skull" id="giantRansomSkull"><div class="skull-row"></div><div class="skull-row"></div><div class="skull-row"></div><div class="skull-row"></div><div class="skull-row"></div><div class="skull-row"></div><div class="skull-row"></div><div class="skull-row"></div><div class="skull-row"></div><div class="skull-row"></div><div class="skull-row"></div><div class="skull-row"></div></div>
-    <div class="breach-subtext" id="breachSubtext">YOUR FILES HAVE BEEN ENCRYPTED</div>
+    <div class="breach-subtext" id="breachSubtext">THE SYSTEM HAS BEEN COMPROMISED</div>
   </div>
 
   <canvas id="fxCanvas"></canvas>
@@ -95,10 +95,12 @@
       var elapsed = typeof startTime !== 'undefined' && startTime ? Math.floor((Date.now() - startTime) / 1000) : 0;
       var answeredCount = typeof currentIndex !== 'undefined' ? Math.min(currentIndex, TOTAL_QUESTIONS) : 0;
       var finalScore = typeof score !== 'undefined' ? Number(score || 0) : 0;
-      return {type:'SCCYBER_GAME_ATTEMPT',game:'breach-lockdown',score:finalScore,totalQuestions:TOTAL_QUESTIONS,correct:finalScore,wrong:Math.max(0, answeredCount-finalScore),answered:answeredCount,accuracy:Math.round((finalScore/TOTAL_QUESTIONS)*100),durationSeconds:elapsed,completed:answeredCount>=TOTAL_QUESTIONS,passed:finalScore>=PASS_MARK,createdAt:new Date().toISOString()};
+      var completed = answeredCount >= TOTAL_QUESTIONS;
+      if (!completed) return null;
+      return {type:'SCCYBER_GAME_ATTEMPT',game:'breach-lockdown',score:finalScore,totalQuestions:TOTAL_QUESTIONS,correct:finalScore,wrong:Math.max(0, answeredCount-finalScore),answered:answeredCount,accuracy:Math.round((finalScore/TOTAL_QUESTIONS)*100),durationSeconds:elapsed,completed:true,passed:finalScore>=PASS_MARK,createdAt:new Date().toISOString()};
     }
     window.sccyberGetAttempt = buildSccyberAttempt;
-    window.addEventListener('message', function(event){var data=event.data||{};if(data.type==='SCCYBER_REQUEST_ATTEMPT'){window.parent.postMessage(buildSccyberAttempt(), '*');}});
+    window.addEventListener('message', function(event){var data=event.data||{};if(data.type==='SCCYBER_REQUEST_ATTEMPT'){var attempt=buildSccyberAttempt();if(attempt)window.parent.postMessage(attempt, '*');}});
   </script>
   <script src="breach-v2.js"></script>
 </body>
