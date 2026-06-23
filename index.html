@@ -102,6 +102,5 @@
     window.sccyberGetAttempt = buildSccyberAttempt;
     window.addEventListener('message', function(event){var data=event.data||{};if(data.type==='SCCYBER_REQUEST_ATTEMPT'){var attempt=buildSccyberAttempt();if(attempt)window.parent.postMessage(attempt, '*');}});
   </script>
-  <script src="breach-v2.js"></script>
 </body>
 </html>
